@@ -12,14 +12,14 @@ struct ContentView: View {
     var body: some View {
         VStack {
             Button("Tap Me"){
-                animationAmount += 0.50
+                animationAmount += 1
             }.padding(50)
                 .background(.red)
                 .foregroundStyle(.white)
                 .clipShape(.circle)
                 .scaleEffect(animationAmount)
                 .blur(radius: (animationAmount - 1) * 3)
-                .animation(.default, value: animationAmount)
+                .animation(.linear, value: animationAmount)
         }
         .padding()
     }
