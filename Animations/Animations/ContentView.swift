@@ -19,7 +19,7 @@ struct ContentView: View {
                 .clipShape(.circle)
                 .scaleEffect(animationAmount)
                 .blur(radius: (animationAmount - 1) * 3)
-                .animation(.easeInOut(duration: 1), value: animationAmount)
+                .animation(.easeInOut(duration: 1).delay(1), value: animationAmount)
         }
         .padding()
     }
