@@ -8,28 +8,38 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var animationAmount = 1.0
+    @State private var animationAmount = 0.0
+    @State private var enable = false
+    
     var body: some View {
-        VStack {
-            Stepper("Scale up the button below", value: $animationAmount.animation(), in: 0...5)
             
-            Spacer()
-            
-            Button("Tap Me"){
-                animationAmount += 1
-            }.padding(50)
-                .background(.red)
-                .foregroundStyle(.white)
-                .clipShape(.circle)
-                .overlay{
-                    Circle().stroke(.red)
-                        .scaleEffect(animationAmount)
-                        .opacity(2 - animationAmount)
-                        .animation(.easeOut(duration: 1).repeatForever(autoreverses: false), value: animationAmount)
-                }.onAppear{ animationAmount = 2 }
-        }
-        .padding()
+        Spacer()
+        Button("Tap Me"){
+            withAnimation(.spring(duration: 1.0, bounce: 0.5)){
+                animationAmount += 360
+            }
+        }.padding(50)
+            .background(.red)
+            .foregroundStyle(.white)
+            .clipShape(.circle)
+            .shadow(radius: 20.0)
+            .rotation3DEffect(.degrees(animationAmount),axis: (x: Double.random(in:0...360), y: Double.random(in:0...360), z: Double.random(in:0...360)))
         
+        Spacer()
+        Button("Tap Me"){
+            enable.toggle()
+            withAnimation(.spring(duration: 1.0, bounce: 0.5)){
+                animationAmount += 360
+            }
+        }.padding(50)
+            .background(enable ? .red : .blue)
+            .foregroundStyle(.white)
+            .clipShape(/*enable ? AnyShape(.circle) :*/ AnyShape(.rect(cornerRadius:enable ? 60.0 : 10.0)) )
+            .shadow(radius: 20.0)
+            .animation(.spring(duration: 1.0,bounce: 0.7), value:!enable)
+            
+//            .rotation3DEffect(.degrees(animationAmount),axis: (x: Double.random(in:0...360), y: Double.random(in:0...360), z: Double.random(in:0...360)))
+        Spacer()
     }
 }
 
