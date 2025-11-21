@@ -8,23 +8,28 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var enable = false
     @State private var dragAmount = CGSizeZero
+    let letters = Array("Hello SwiftUI")
     
     var body: some View {
-        LinearGradient(colors: [ .yellow, .blue], startPoint: .topLeading, endPoint: .bottomTrailing)
-            .frame(width: 300,height: 200)
-            .clipShape(.rect(cornerRadius: 10.0))
-            .offset(dragAmount)
-            .gesture(
-                DragGesture()
-                .onChanged{ dragAmount = $0.translation }
-                    .onEnded{ _ in
-                        withAnimation(.bouncy){ // explicitly to the end only
+        HStack(spacing:0){
+            ForEach(0..<letters.count, id:\.self){num in
+                Text(String(letters[num]))
+                    .padding(5)
+                    .font(.title2)
+                    .background(enable ? .red : .blue)
+                    .foregroundStyle(.white)
+                    .offset(dragAmount)
+                    .animation(.linear.delay(Double(num)/20),value: dragAmount)
+                    .gesture(DragGesture()
+                        .onChanged{ dragAmount = $0.translation}
+                        .onEnded{_ in
                             dragAmount = .zero
-                        }
-                    }
-            )
-//            .animation(.bouncy, value: dragAmount)// implicit animation approach for both onchange and onEnded
+                            enable.toggle()
+                        })
+            }
+        }
     }
 }
 
